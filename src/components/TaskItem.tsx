@@ -36,6 +36,7 @@ export function TaskItem({ task, onDelete, handleToggleTask, handleEditTask }: P
 
   function onEditTask(id: number, newTitle: string) {
     handleEditTask(id, newTitle)
+    setIsEditModalOpen(false)
   }
 
   return (
