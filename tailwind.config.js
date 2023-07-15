@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
@@ -24,9 +21,8 @@ export default {
           900: "#595043",
           950: "#2e2921",
         },
-      }
+      },
     },
   },
   plugins: [],
-}
-
+};
