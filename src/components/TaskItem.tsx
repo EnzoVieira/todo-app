@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
+import dayjs from "dayjs";
 
 import { Modal } from "./Modal";
 
 export type TaskProps = {
   id: number;
   titulo: string;
-  date: string;
+  date: Date;
   checked: boolean;
 };
 
@@ -44,8 +45,12 @@ export function TaskItem({
     setIsEditModalOpen(false);
   }
 
+  function formatDate() {
+    return dayjs(task.date).format("h:mm A, DD/MM/YYYY"); // display
+  }
+
   return (
-    <div className="flex justify-between bg-pampas-50 rounded-md px-3 py-4 items-center">
+    <div className="flex justify-between bg-pampas-50 rounded-sm px-3 py-4 items-center">
       <div className="flex items-center">
         <input
           onChange={handleToggleChecked}
@@ -58,7 +63,7 @@ export function TaskItem({
           <strong className="font-medium text-pampas-900 text-lg leading-tight">
             {task.titulo}
           </strong>
-          <time className="text-pampas-500 text-sm">{task.date}</time>
+          <time className="text-pampas-500 text-sm">{formatDate()}</time>
         </div>
       </div>
 

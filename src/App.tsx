@@ -26,7 +26,7 @@ function App() {
       {
         id: Math.random(),
         titulo,
-        date: "7:30 AM, 09/07/2023",
+        date: new Date(),
         checked: false,
       },
     ];
