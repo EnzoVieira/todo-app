@@ -1,26 +1,24 @@
-import { useState, useEffect } from "react"
-import { TaskItem, TaskProps } from "./components/TaskItem"
+import { useState, useEffect, useCallback } from "react"
 
+import { TaskItem, TaskProps } from "./components/TaskItem"
 import { Button } from "./components/Button"
 import { Modal } from "./components/Modal"
 
+import { useLocalStorage } from "./hooks/useLocalStorage"
+
 type StatusType = "all" | "complete" | "incomplete"
 
-const arr: TaskProps[] = [
-  {id: 1, titulo: "Task 1", checked: true, date: "7:30 AM, 09/07/2023" },
-  {id: 2, titulo: "Task 2", checked: true, date: "7:30 AM, 09/07/2023" },
-  {id: 3, titulo: "Task 3", checked: false, date: "7:30 AM, 09/07/2023" },
-  {id: 4, titulo: "Task 4", checked: false, date: "7:30 AM, 09/07/2023" },
-]
+const TASKS_LOCALSTORAGE_KEY = "tasks"
 
 function App() {
-  const [taskList, setNewTaskList] = useState(arr)
+  const [taskList, setNewTaskList] = useLocalStorage<TaskProps>(TASKS_LOCALSTORAGE_KEY)
   const [selectStatus, setSelectStatus] = useState<StatusType>("all")
   const [filteredTaskList, setFilteredTaskList] = useState<TaskProps[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   function onAddTask(titulo: string) {
-    setNewTaskList([...taskList, { id: Math.random(), titulo, date: "7:30 AM, 09/07/2023", checked: false }])
+    const newTasks = [...taskList, { id: Math.random(), titulo, date: "7:30 AM, 09/07/2023", checked: false }]
+    setNewTaskList(newTasks)
     setIsModalOpen(false)
   }
 
@@ -59,7 +57,7 @@ function App() {
     setNewTaskList(newArr)
   }
 
-  function filterTaskList() {
+  const filterTaskList = useCallback(() => {
     switch (selectStatus) {
       case "complete": {
         const newArr = taskList.filter(task => task.checked)
@@ -78,7 +76,7 @@ function App() {
         break
       }
     }
-  }
+  }, [taskList, selectStatus])
 
   function handleOpenModal() {
     setIsModalOpen(true)
@@ -90,8 +88,7 @@ function App() {
 
   useEffect(() => {
     filterTaskList()
-    // loadState()
-  }, [taskList, selectStatus])
+  }, [filterTaskList, taskList])
 
   return (
     <div className="w-full mx-auto max-w-6xl px-4 py-10">
